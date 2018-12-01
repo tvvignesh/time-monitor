@@ -29,9 +29,10 @@ exports.deleteEvent = function (req, res) {
     });
 };
 exports.listEvents = function (req, res) {
-    event_utils_1.findEvents({}, function (events) {
+    let reqBody = req.body;
+    event_utils_1.findEvents(reqBody, function (events) {
         console.log('events::', events);
-        return res.status(200).jsonp(events);
+        return res.status(200).jsonp({ events: events });
     });
 };
 //# sourceMappingURL=events.server.controller.js.map

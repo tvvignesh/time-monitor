@@ -62,11 +62,11 @@ export const deleteEvent = function (req, res) {
  */
 export const listEvents = function (req, res) {
 
-    findEvents({
+    let reqBody = req.body;
 
-    }, function (events) {
+    findEvents(reqBody, function (events) {
         console.log('events::', events);
 
-        return res.status(200).jsonp(events);
+        return res.status(200).jsonp({events: events});
     });
 };
