@@ -1,11 +1,12 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 let fs = require('fs'), http = require('http'), https = require('https'), path = require('path');
-let express = require('express'), morgan = require('morgan'), bodyParser = require('body-parser'), methodOverride = require('method-override'), helmet = require('helmet'), mustacheExpress = require('mustache-express'), xss = require('xss-clean'), swaggerUi = require('swagger-ui-express'), YAML = require('yamljs');
+let express = require('express'), morgan = require('morgan'), bodyParser = require('body-parser'), methodOverride = require('method-override'), helmet = require('helmet'), mustacheExpress = require('mustache-express'), xss = require('xss-clean'), swaggerUi = require('swagger-ui-express'), YAML = require('yamljs'), cors = require('cors');
 let config = require('./config'), logger = require('./logger');
 module.exports = function (db) {
     let app = express();
     global["db"] = db;
+    app.use(cors());
     app.locals.title = config.app.title;
     app.locals.description = config.app.description;
     app.use(function (req, res, next) {

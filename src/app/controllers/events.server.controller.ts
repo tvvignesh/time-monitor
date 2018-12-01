@@ -11,6 +11,8 @@ export const createEvent = function (req, res) {
 
     console.log('reqBody:', reqBody);
 
+    reqBody.eventTags = reqBody.eventTags.split(',');
+
     let eventObj = {
         metaData: reqBody
     };

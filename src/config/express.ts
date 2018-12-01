@@ -17,7 +17,8 @@ let express = require('express'),
     mustacheExpress = require('mustache-express'),
     xss = require('xss-clean'),
     swaggerUi = require('swagger-ui-express'),
-    YAML = require('yamljs');
+    YAML = require('yamljs'),
+    cors = require('cors');
 
 let config = require('./config'),
     logger = require('./logger');
@@ -32,6 +33,8 @@ module.exports = function (db) {
     let app = express();
 
     global["db"] = db;
+
+    app.use(cors());
 
     // Setting application local variables
     app.locals.title = config.app.title;

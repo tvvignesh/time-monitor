@@ -4,6 +4,7 @@ const event_utils_1 = require("../utils/event.utils");
 exports.createEvent = function (req, res) {
     let reqBody = req.body;
     console.log('reqBody:', reqBody);
+    reqBody.eventTags = reqBody.eventTags.split(',');
     let eventObj = {
         metaData: reqBody
     };

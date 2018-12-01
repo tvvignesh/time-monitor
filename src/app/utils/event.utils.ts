@@ -50,8 +50,8 @@ export const pushEvent = function (eventObj, callback) {
 
     collection.insertMany([
         {
-            title: "running",
-            tags: ["physical", "excercise", "sports"],
+            title: eventObj.title,
+            tags: eventObj.eventTags,
             uid: "1234",
             time: Date.now(),
             location: "gps-coord",
