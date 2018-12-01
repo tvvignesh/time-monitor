@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Time Monitor - Time is Money">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Time Monitor</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Time Monitor">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="https://www.timecampus.com/images/favicon.ico">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        function capitalizeTxt(txt) {
+            return txt.charAt(0).toUpperCase() + txt.slice(1);
+        }
+
+        function loadEvents() {
+
+            fetch('http://localhost:8085/events/list', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'timemonitor@1234'
+                },
+                body: JSON.stringify({
+                    "uid": "1234"
+                })
+            }).then(res => res.json())
+                .then(function (res) {
+                    var eventHTML = ``;
+
+                    // DOM element where the Timeline will be attached
+                    var container = document.getElementById('timelineEnclose');
+
+                    var dataSet = [];
+
+                    //TODO: API Call to be made to create the event
+                    for (var i = 0; i < res.events.length; i++) {
+                        if (!res.events[ i ].tags) res.events[ i ].tags = [];
+
+                        var tagHTML = ``;
+
+                        for (var k = 0; k < res.events[ i ].tags.length; k++) {
+                            tagHTML += `
+                            <span class="mdl-chip">
+                                <span class="mdl-chip__text">${res.events[ i ].tags[ k ] }</span>
+                            </span>
+                            `;
+                        }
+
+                        var amOrPm = (new Date(res.events[ i ].time).getHours() < 12) ? "AM" : "PM";
+                        eventHTML += `
+                        <div class="mdl-card mdl-cell mdl-cell--4-col" style="background-color:#f5f5f5 !important;width:280px;">
+                        <div class="demo-card-event mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand">
+                                <h4>
+                                    ${capitalizeTxt(res.events[ i ].title) || 'NA' }
+                                    <br>
+                                    <span style="font-size:15px;">${new Date(res.events[ i ].time).toDateString() || '-' }</span>
+                                    <span style="font-size:12px;">${new Date(res.events[ i ].time).getHours() + ":" + new Date(res.events[ i ].time).getMinutes() + " " + amOrPm || '--:--' }</span>
+                                    <br>
+                                    <span style="font-size:10px;">${tagHTML || '----' }</span>
+                                </h4>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="#"
+                                    target="_blank">
+                                    MORE
+                                </a>
+                                <div class="mdl-layout-spacer"></div>
+                                <i class="material-icons">more</i>
+                            </div>
+                        </div>
+                    </div>
+                        `;
+
+                        dataSet.push({
+                            id: res.events[ i ]._id,
+                            content: capitalizeTxt(res.events[ i ].title) || "NA",
+                            start: new Date(res.events[ i ].time)
+                        });
+                    }
+
+                    console.log('dataSet::', dataSet);
+
+                    document.getElementById('eventEnclose').innerHTML = eventHTML;
+
+                    // Create a DataSet (allows two way data-binding)
+                    var items = new vis.DataSet(dataSet);
+
+                    // Configuration for the Timeline
+                    var options = {};
+
+                    // Create a Timeline
+                    var timeline = new vis.Timeline(container, items, options);
+                });
+        }
+    </script>
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+            </div>
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+                <h3>Time Monitor</h3>
+            </div>
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+            </div>
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                <a href="#myevents" class="mdl-layout__tab is-active">My Events</a>
+                <a href="addevent.html" class="mdl-layout__tab">Add an Event</a>
+                <a href="#feedback" class="mdl-layout__tab">Share Feedback</a>
+                <a href="#resources" class="mdl-layout__tab">Source Code</a>
+                <a href="addevent.html" target="_blank" title="Add Event">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
+                        id="add">
+                        <i class="material-icons" role="presentation">add</i>
+                        <span class="visuallyhidden">Add Event</span>
+                    </button>
+                </a>
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+
+
+
+            <div class="mdl-layout__tab-panel is-active" id="myevents">
+
+
+                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+                    <div class="mdl-card mdl-cell mdl-cell--12-col">
+                        <div class="mdl-card__supporting-text">
+                            <h4>What is Time Monitor?</h4>
+                            People waste a lot of time daily. This is meant to be a tool which can help users track and
+                            monitor time.
+                        </div>
+                        <!-- <div class="mdl-card__actions">
+                <a href="#" class="mdl-button">Read our features</a>
+              </div> -->
+                    </div>
+                </section>
+
+
+                <section class="section--center mdl-grid mdl-grid--no-spacing">
+
+                    <h3>Your Event Timeline</h3>
+
+                    <div id="timelineEnclose" style="width:100%;"></div>
+                </section>
+
+                <div align="center">
+                    <h3>Events</h3>
+                </div>
+                <br>
+
+                <section class="section--center mdl-grid mdl-grid--no-spacing" id="eventEnclose">
+                </section>
+            </div>
+
+            <div class="mdl-layout__tab-panel" id="feedback">
+                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+
+
+                    <div class="mdl-card mdl-cell mdl-cell--12-col">
+                        <div class="mdl-card__supporting-text">
+                            <h4>Share feedback</h4>
+                            Share all the feedback you have on this project here.
+
+                            <br>
+                            <br>
+
+                            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeYBrCYaY1-rI90qpTSVms6nukqN23ecx5KhPK3ESy_YrceOQ/viewform?embedded=true"
+                                width="760" height="1450" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+                        </div>
+                        <!-- <div class="mdl-card__actions">
+                <a href="#" class="mdl-button">Read our features</a>
+              </div> -->
+                    </div>
+                </section>
+            </div>
+
+
+
+            <div class="mdl-layout__tab-panel" id="resources">
+                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+
+                    <div class="mdl-card mdl-cell mdl-cell--12-col">
+                        <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                            <h4 class="mdl-cell mdl-cell--12-col">Resources</h4>
+                            <!-- <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                  <div class="section__circle-container__circle mdl-color--primary"></div>
+                </div> -->
+                            <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                                <h5>Github Repository</h5>
+                                You can view the github repo for te code to this project, and relevant information
+                                related to the same.
+                                <br>
+                                <br> Link:
+                                <a href="https://github.com/tvvignesh/time-monitor">https://github.com/tvvignesh/time-monitor</a>.
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+
+
+            <!-- <footer class="mdl-mega-footer">
+          <div class="mdl-mega-footer--middle-section">
+            <div class="mdl-mega-footer--drop-down-section">
+              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+              <h1 class="mdl-mega-footer--heading">Features</h1>
+              <ul class="mdl-mega-footer--link-list">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Partners</a></li>
+                <li><a href="#">Updates</a></li>
+              </ul>
+            </div>
+            <div class="mdl-mega-footer--drop-down-section">
+              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+              <h1 class="mdl-mega-footer--heading">Details</h1>
+              <ul class="mdl-mega-footer--link-list">
+                <li><a href="#">Spec</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">Resources</a></li>
+              </ul>
+            </div>
+            <div class="mdl-mega-footer--drop-down-section">
+              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+              <h1 class="mdl-mega-footer--heading">Technology</h1>
+              <ul class="mdl-mega-footer--link-list">
+                <li><a href="#">How it works</a></li>
+                <li><a href="#">Patterns</a></li>
+                <li><a href="#">Usage</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contracts</a></li>
+              </ul>
+            </div>
+            <div class="mdl-mega-footer--drop-down-section">
+              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
+              <h1 class="mdl-mega-footer--heading">FAQ</h1>
+              <ul class="mdl-mega-footer--link-list">
+                <li><a href="#">Questions</a></li>
+                <li><a href="#">Answers</a></li>
+                <li><a href="#">Contact us</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mdl-mega-footer--bottom-section">
+            <div class="mdl-logo">
+              More Information
+            </div>
+            <ul class="mdl-mega-footer--link-list">
+              <li><a href="https://developers.google.com/web/starter-kit/">Web Starter Kit</a></li>
+              <li><a href="#">Help</a></li>
+              <li><a href="#">Privacy and Terms</a></li>
+            </ul>
+          </div>
+        </footer> -->
+        </main>
+    </div>
+    <a href="addevent.html" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Add
+        an Event</a>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</body>
+
+<script type="text/javascript">
+    loadEvents();
+</script>
+
+</html>
