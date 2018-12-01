@@ -8,10 +8,24 @@ exports.createEvent = function (req, res) {
     let eventObj = {
         metaData: reqBody
     };
-    event_utils_1.pushEvent(eventObj, function (event) {
-        console.log('event:', event);
-        return res.status(200).jsonp({
-            message: 'Event created successfully!'
+    if (reqBody.eventStartTime) {
+        eventObj.metaData["eventStartTime"] = new Date(reqBody.eventStartTime);
+    }
+    else {
+        eventObj.metaData["eventStartTime"] = Date.now();
+    }
+    if (reqBody.eventEndTime) {
+        eventObj.metaData["eventEndTime"] = new Date(reqBody.eventEndTime);
+    }
+    else {
+        eventObj.metaData["eventEndTime"] = Date.now();
+    }
+    event_utils_1.pushEvent(eventObj, function () {
+        console.log('event:', eventObj);
+        event_utils_1.addEventToGoogle(eventObj, function () {
+            return res.status(200).jsonp({
+                message: 'Event created successfully!'
+            });
         });
     });
 };

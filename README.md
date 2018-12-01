@@ -2,6 +2,10 @@
 
 Checkin user events corresponding to respective time, display them, and track them over time.
 
+Google calendar support is added. So, when an event is created in Time Monitor, it automatically creates an event in Google Calendar.
+
+Timeline shows the various user events occurring over time.
+
 ## Motive behind this project
 
 People waste a lot of time daily. This is meant to be a tool which can help users track and monitor time.

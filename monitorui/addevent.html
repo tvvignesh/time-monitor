@@ -30,6 +30,8 @@
             var eventTitle = document.getElementById('eventTitle').value;
             var eventDescription = document.getElementById('eventDescription').value;
             var eventTags = document.getElementById('eventTags').value;
+            var eventStartTime = document.getElementById('eventStartTime').value;
+            var eventEndTime = document.getElementById('eventEndTime').value;
 
             console.log(eventTitle, eventDescription, eventTags);
 
@@ -43,7 +45,9 @@
                 body: JSON.stringify({
                     "eventTitle": eventTitle,
                     "eventDescription": eventDescription,
-                    "eventTags": eventTags
+                    "eventTags": eventTags,
+                    "eventStartTime": eventStartTime,
+                    "eventEndTime": eventEndTime
                 })
             }).then(res => res.json())
                 .then(function (res) {
@@ -128,6 +132,19 @@
                                 <div class="mdl-textfield mdl-js-textfield">
                                     <textarea class="mdl-textfield__input" type="text" rows="3" id="eventTags"></textarea>
                                     <label class="mdl-textfield__label" for="eventTags">Tags (separated by comma)</label>
+                                </div>
+
+                                <br />
+
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    Start Time: <input type="datetime-local" id="eventStartTime">
+                                    <!-- <label class="mdl-textfield__label" for="eventStartTime">Start Time</label> -->
+                                </div>
+
+                                <br />
+
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    End Time: <input type="datetime-local" id="eventEndTime">
                                 </div>
 
                                 <br />

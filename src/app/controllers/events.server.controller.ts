@@ -1,4 +1,4 @@
-import {findEvents, pushEvent} from "../utils/event.utils";
+import {findEvents, pushEvent, addEventToGoogle} from "../utils/event.utils";
 
 /**
  * CREATE AN EVENT
@@ -17,11 +17,25 @@ export const createEvent = function (req, res) {
         metaData: reqBody
     };
 
-    pushEvent(eventObj, function (event) {
-        console.log('event:', event);
+    if (reqBody.eventStartTime) {
+        eventObj.metaData["eventStartTime"] = new Date(reqBody.eventStartTime);
+    } else {
+        eventObj.metaData["eventStartTime"] = Date.now();
+    }
 
-        return res.status(200).jsonp({
-            message: 'Event created successfully!'
+    if (reqBody.eventEndTime) {
+        eventObj.metaData["eventEndTime"] = new Date(reqBody.eventEndTime);
+    } else {
+        eventObj.metaData["eventEndTime"] = Date.now();
+    }
+
+    pushEvent(eventObj, function () {
+        console.log('event:', eventObj);
+
+        addEventToGoogle(eventObj, function () {
+            return res.status(200).jsonp({
+                message: 'Event created successfully!'
+            });
         });
     });
 };

@@ -30,10 +30,11 @@
     <script type="text/javascript">
 
         function capitalizeTxt(txt) {
+            if (!txt) return '';
             return txt.charAt(0).toUpperCase() + txt.slice(1);
         }
 
-        function loadEvents() {
+        function loadEvents(callback) {
 
             fetch('http://localhost:8085/events/list', {
                 method: 'post',
@@ -54,8 +55,11 @@
 
                     var dataSet = [];
 
+                    window.eventList = res.events;
+
                     //TODO: API Call to be made to create the event
                     for (var i = 0; i < res.events.length; i++) {
+
                         if (!res.events[ i ].tags) res.events[ i ].tags = [];
 
                         var tagHTML = ``;
@@ -70,7 +74,7 @@
 
                         var amOrPm = (new Date(res.events[ i ].time).getHours() < 12) ? "AM" : "PM";
                         eventHTML += `
-                        <div class="mdl-card mdl-cell mdl-cell--4-col" style="background-color:#f5f5f5 !important;width:280px;">
+                        <div class="mdl-card mdl-cell mdl-cell--4-col event-parent" style="background-color:#f5f5f5 !important;width:280px;" data-eventindex="${i }">
                         <div class="demo-card-event mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title mdl-card--expand">
                                 <h4>
@@ -83,8 +87,7 @@
                                 </h4>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="#"
-                                    target="_blank">
+                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="#dialog-${i }">
                                     MORE
                                 </a>
                                 <div class="mdl-layout-spacer"></div>
@@ -92,6 +95,23 @@
                             </div>
                         </div>
                     </div>
+
+<div id="dialog-${i }" class="overlay">
+	<div class="popup">
+		<h2>${ res.events[ i ].title || 'NA' }</h2>
+		<a class="close" href="#">&times;</a>
+        <div class="content">
+            <br><br>
+            Description: ${ res.events[ i ].metadata.description || '' }
+            <br><br>
+            Time: ${ new Date(res.events[ i ].time).toISOString() || '' }
+            <br><br>
+            Duration: ${ res.events[ i ].duration || '' }
+            <br><br>
+            Tags: ${ tagHTML || '' }
+		</div>
+	</div>
+</div>
                         `;
 
                         dataSet.push({
@@ -113,14 +133,11 @@
 
                     // Create a Timeline
                     var timeline = new vis.Timeline(container, items, options);
+
+                    callback();
                 });
         }
     </script>
-
-    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
-    <!--
-    <link rel="canonical" href="http://www.example.com/">
-    -->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -312,7 +329,10 @@
 </body>
 
 <script type="text/javascript">
-    loadEvents();
+
+    window.dialogs = {};
+
+    loadEvents(function () {});
 </script>
 
 </html>
