@@ -50,6 +50,9 @@
                 .then(function (res) {
                     var eventHTML = ``;
 
+                    // DOM element where the Timeline will be attached
+                    var container = document.getElementById('timelineEnclose');
+
                     var dataSet = [];
 
                     window.eventList = res.events;
@@ -121,27 +124,17 @@
                         });
                     }
 
-                    console.log('dataSet::', dataSet);
+                    // Create a DataSet (allows two way data-binding)
+                    var items = new vis.DataSet(dataSet);
 
-                    document.getElementById('eventEnclose').innerHTML = eventHTML;
+                    // Configuration for the Timeline
+                    var options = {};
+
+                    // Create a Timeline
+                    var timeline = new vis.Timeline(container, items, options);
 
                     callback();
                 });
-        }
-
-        function searchEvents() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toLowerCase();
-            elements = document.querySelectorAll(".event-parent")
-            for (i = 0; i < elements.length; i++) {
-                txtValue = elements[ i ].getAttribute("data-title");
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    elements[ i ].style.display = "";
-                } else {
-                    elements[ i ].style.display = "none";
-                }
-            }
         }
     </script>
 
@@ -169,14 +162,14 @@
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
             </div>
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-                <h3>Time Monitor - Events</h3>
+                <h3>Time Monitor - Timeline</h3>
             </div>
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
             </div>
             <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
                 <a href="about.html" class="mdl-layout__tab">About</a>
-                <a href="index.html" class="mdl-layout__tab is-active">My Events</a>
-                <a href="timeline.html" class="mdl-layout__tab">Timeline</a>
+                <a href="index.html" class="mdl-layout__tab">My Events</a>
+                <a href="timeline.html" class="mdl-layout__tab is-active">Timeline</a>
                 <a href="addevent.html" class="mdl-layout__tab">Add an Event</a>
                 <a href="#feedback" class="mdl-layout__tab">Share Feedback</a>
                 <a href="#resources" class="mdl-layout__tab">Source Code</a>
@@ -195,126 +188,38 @@
 
             <div class="mdl-layout__tab-panel is-active" id="myevents">
 
-                <div align="center">
-                    <h3>Events</h3>
-                </div>
-                <br>
+                <section class="section--center mdl-grid mdl-grid--no-spacing">
 
-                <div align="center">
-                    <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input" type="text" id="myInput" onkeyup="searchEvents()">
-                        <label class="mdl-textfield__label" for="myInput">Search for events..</label>
-                    </div>
-                </div>
-                <br>
+                    <h3>Your Event Timeline</h3>
 
-                <section class="section--center mdl-grid mdl-grid--no-spacing" id="eventEnclose">
+                    <div id="timelineEnclose" style="width:100%;"></div>
                 </section>
-            </div>
 
-            <div class="mdl-layout__tab-panel" id="feedback">
-                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+                <div class="mdl-layout__tab-panel" id="resources">
+                    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
 
-
-                    <div class="mdl-card mdl-cell mdl-cell--12-col">
-                        <div class="mdl-card__supporting-text">
-                            <h4>Share feedback</h4>
-                            Share all the feedback you have on this project here.
-
-                            <br>
-                            <br>
-
-                            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeYBrCYaY1-rI90qpTSVms6nukqN23ecx5KhPK3ESy_YrceOQ/viewform?embedded=true"
-                                width="760" height="1450" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-                        </div>
-                        <!-- <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
-              </div> -->
-                    </div>
-                </section>
-            </div>
-
-
-
-            <div class="mdl-layout__tab-panel" id="resources">
-                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-
-                    <div class="mdl-card mdl-cell mdl-cell--12-col">
-                        <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
-                            <h4 class="mdl-cell mdl-cell--12-col">Resources</h4>
-                            <!-- <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                        <div class="mdl-card mdl-cell mdl-cell--12-col">
+                            <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                                <h4 class="mdl-cell mdl-cell--12-col">Resources</h4>
+                                <!-- <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
                   <div class="section__circle-container__circle mdl-color--primary"></div>
                 </div> -->
-                            <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                                <h5>Github Repository</h5>
-                                You can view the github repo for te code to this project, and relevant information
-                                related to the same.
-                                <br>
-                                <br> Link:
-                                <a href="https://github.com/tvvignesh/time-monitor">https://github.com/tvvignesh/time-monitor</a>.
-                                <br>
-                                <br>
+                                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                                    <h5>Github Repository</h5>
+                                    You can view the github repo for te code to this project, and relevant information
+                                    related to the same.
+                                    <br>
+                                    <br> Link:
+                                    <a href="https://github.com/tvvignesh/time-monitor">https://github.com/tvvignesh/time-monitor</a>.
+                                    <br>
+                                    <br>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </section>
-            </div>
+                    </section>
+                </div>
 
-
-            <!-- <footer class="mdl-mega-footer">
-          <div class="mdl-mega-footer--middle-section">
-            <div class="mdl-mega-footer--drop-down-section">
-              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-              <h1 class="mdl-mega-footer--heading">Features</h1>
-              <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Terms</a></li>
-                <li><a href="#">Partners</a></li>
-                <li><a href="#">Updates</a></li>
-              </ul>
-            </div>
-            <div class="mdl-mega-footer--drop-down-section">
-              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-              <h1 class="mdl-mega-footer--heading">Details</h1>
-              <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">Spec</a></li>
-                <li><a href="#">Tools</a></li>
-                <li><a href="#">Resources</a></li>
-              </ul>
-            </div>
-            <div class="mdl-mega-footer--drop-down-section">
-              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-              <h1 class="mdl-mega-footer--heading">Technology</h1>
-              <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">How it works</a></li>
-                <li><a href="#">Patterns</a></li>
-                <li><a href="#">Usage</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Contracts</a></li>
-              </ul>
-            </div>
-            <div class="mdl-mega-footer--drop-down-section">
-              <input class="mdl-mega-footer--heading-checkbox" type="checkbox" checked>
-              <h1 class="mdl-mega-footer--heading">FAQ</h1>
-              <ul class="mdl-mega-footer--link-list">
-                <li><a href="#">Questions</a></li>
-                <li><a href="#">Answers</a></li>
-                <li><a href="#">Contact us</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="mdl-mega-footer--bottom-section">
-            <div class="mdl-logo">
-              More Information
-            </div>
-            <ul class="mdl-mega-footer--link-list">
-              <li><a href="https://developers.google.com/web/starter-kit/">Web Starter Kit</a></li>
-              <li><a href="#">Help</a></li>
-              <li><a href="#">Privacy and Terms</a></li>
-            </ul>
-          </div>
-        </footer> -->
         </main>
     </div>
     <a href="addevent.html" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Add
