@@ -82,8 +82,8 @@
                                 <h4>
                                     <span class="eventTitle">${capitalizeTxt(res.events[ i ].title) || 'NA' }</span>
                                     <br>
-                                    <span style="font-size:15px;">${new Date(res.events[ i ].time).toDateString() || '-' }</span>
-                                    <span style="font-size:12px;">${new Date(res.events[ i ].time).getHours() + ":" + new Date(res.events[ i ].time).getMinutes() + " " + amOrPm || '--:--' }</span>
+                                    <span style="font-size:15px;">${new Date(res.events[ i ][ "metadata" ].eventStartTime).toDateString() || '-' }</span>
+                                    <span style="font-size:12px;">${new Date(res.events[ i ][ "metadata" ].eventStartTime).getHours() + ":" + new Date(res.events[ i ][ "metadata" ].eventStartTime).getMinutes() + " " + amOrPm || '--:--' }</span>
                                     <br>
                                     <span style="font-size:10px;">${tagHTML || '----' }</span>
                                 </h4>
@@ -104,7 +104,7 @@
 		<a class="close" href="#">&times;</a>
         <div class="content">
             <br><br>
-            Description: ${ res.events[ i ].metadata.description || '' }
+            Description: ${ res.events[ i ].metadata.eventDescription || '' }
             <br><br>
             Start Time: ${ res.events[ i ].metadata.eventStartTime || '' }
             <br><br>
