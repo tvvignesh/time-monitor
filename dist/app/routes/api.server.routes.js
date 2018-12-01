@@ -5,7 +5,7 @@ const events_server_controller_1 = require("../controllers/events.server.control
 const metrics_server_controller_1 = require("../controllers/metrics.server.controller");
 module.exports = function (app) {
     app.route('/event/add').post(auth_server_controller_1.authenticate, events_server_controller_1.createEvent);
-    app.route('/event/:eventID/view').post(auth_server_controller_1.authenticate, events_server_controller_1.displayEvent);
+    app.route('/event/:eventID/view').post(auth_server_controller_1.authenticate, events_server_controller_1.getEvent);
     app.route('/events/list').post(auth_server_controller_1.authenticate, events_server_controller_1.listEvents);
     app.route('/metrics').get(metrics_server_controller_1.getMetrics);
 };

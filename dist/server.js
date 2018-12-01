@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 let config = require('./config/config');
 const url = 'mongodb://localhost:27017';
 const dbName = 'time-monitor';
-MongoClient.connect(url, function (err, client) {
+MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
     if (err) {
         console.log(err);
     }

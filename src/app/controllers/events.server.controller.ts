@@ -25,11 +25,11 @@ export const createEvent = function (req, res) {
 };
 
 /**
- * DISPLAY AN EVENT
+ * GET AN EVENT INFORMATION
  * @param req Request
  * @param res Response
  */
-export const displayEvent = function (req, res) {
+export const getEvent = function (req, res) {
 
     findEvents({
 

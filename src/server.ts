@@ -13,7 +13,7 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'time-monitor';
 
 // Use connect method to connect to the server
-MongoClient.connect(url, function (err, client) {
+MongoClient.connect(url, {useNewUrlParser: true}, function (err, client) {
 
     if (err) {
         console.log(err);

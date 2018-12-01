@@ -14,7 +14,7 @@ exports.createEvent = function (req, res) {
         });
     });
 };
-exports.displayEvent = function (req, res) {
+exports.getEvent = function (req, res) {
     event_utils_1.findEvents({}, function (events) {
         console.log('events::', events);
         return res.status(200).jsonp({
