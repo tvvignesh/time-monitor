@@ -48,16 +48,16 @@
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
             </div>
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-                <h3>Time Monitor - About</h3>
+                <h3>Time Monitor - Calendar</h3>
             </div>
             <div class="mdl-layout--large-screen-only mdl-layout__header-row">
             </div>
             <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-                <a href="about.html" class="mdl-layout__tab is-active">About</a>
+                <a href="about.html" class="mdl-layout__tab">About</a>
                 <a href="index.html" class="mdl-layout__tab">My Events</a>
                 <a href="timeline.html" class="mdl-layout__tab">Timeline</a>
                 <a href="addevent.html" class="mdl-layout__tab">Add an Event</a>
-                <a href="calendar.html" class="mdl-layout__tab">Calendar</a>
+                <a href="calendar.html" class="mdl-layout__tab is-active">Calendar</a>
                 <a href="#feedback" class="mdl-layout__tab">Share Feedback</a>
                 <a href="#resources" class="mdl-layout__tab">Source Code</a>
                 <a href="addevent.html" target="_blank" title="Add Event">
@@ -75,33 +75,19 @@
 
             <div class="mdl-layout__tab-panel is-active" id="myevents">
 
+                <section class="section--center mdl-grid mdl-grid--no-spacing">
 
-                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-                    <div class="mdl-card mdl-cell mdl-cell--12-col">
-                        <div class="mdl-card__supporting-text">
-                            <h4>What is Time Monitor?</h4>
-                            People waste a lot of time daily. Time Monitor is meant to be a tool which can help users
-                            track and
-                            monitor time at regular intervals and also keep in sync with their Google Calendar.
-                            <br><br>
-                            <b>TIME IS MONEY!</b>
+                    <h3>Your Calendar</h3>
 
-                            <br><br>
+                    <iframe src="https://calendar.google.com/calendar/embed?src=vigneshviswam%40gmail.com&ctz=Asia%2FCalcutta"
+                        style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
-                            <b>Future Scope:</b>
-                            <br>
-                            <ul>
-                                <li>Connecting with IOT Devices</li>
-                                <li>Using Kafka as the Event Queue</li>
-                                <li>Add chatbot and mobile app to check in events</li>
-                                <li>Add analytics and predictive suggestions</li>
-                            </ul>
-                        </div>
-                        <!-- <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
-              </div> -->
-                    </div>
+                    <br><br>
+
+                    <a href="https://calendar.google.com/calendar/ical/vigneshviswam%40gmail.com/public/basic.ics"
+                        class="mdl-button">Download my Calendar</a>
                 </section>
+
         </main>
     </div>
     <a href="addevent.html" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Add
