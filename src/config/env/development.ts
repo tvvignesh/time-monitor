@@ -8,7 +8,7 @@ module.exports = {
     },
     port: process.env.NODEJS_PORT || 8085,
     hostname: process.env.NODEJS_IP || 'localhost',
-    authorization: 'mysecrettoken',
+    authorization: 'timemonitor@1234',
 
     jwt: {
         issuer: process.env.JWT_ISSUER || 'node-skeleton'

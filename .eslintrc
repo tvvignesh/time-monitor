@@ -15,10 +15,6 @@
         }
     },
     "rules": {
-        "array-bracket-spacing": [
-            "error",
-            "always"
-        ],
         "func-call-spacing": [
             "warn"
         ],
@@ -153,7 +149,6 @@
         "complexity": "warn",
         "curly": "error",
         "default-case": "error",
-        "dot-notation": "error",
         "dot-location": [
             "error",
             "property"

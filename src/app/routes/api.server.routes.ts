@@ -1,12 +1,16 @@
 'use strict';
 
-import {getMetrics} from '../controllers/metrics.server.controller';
 import {authenticate} from '../controllers/auth.server.controller';
-import {createEvent} from '../controllers/events.server.controller';
+import {createEvent, displayEvent, listEvents} from '../controllers/events.server.controller';
+import {getMetrics} from '../controllers/metrics.server.controller';
 
 module.exports = function (app) {
 
     app.route('/event/add').post(authenticate, createEvent);
+
+    app.route('/event/:eventID/view').post(authenticate, displayEvent);
+
+    app.route('/events/list').post(authenticate, listEvents);
 
     app.route('/metrics').get(getMetrics);
 

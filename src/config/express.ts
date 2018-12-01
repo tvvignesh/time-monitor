@@ -26,10 +26,12 @@ let config = require('./config'),
 
 // import {schema as schema} from '../schema/schema';
 
-module.exports = function () {
+module.exports = function (db) {
 
     // Initialize express app
     let app = express();
+
+    global["db"] = db;
 
     // Setting application local variables
     app.locals.title = config.app.title;
@@ -148,4 +150,4 @@ module.exports = function () {
     return app;
 };
 
-export { };
+export {};
